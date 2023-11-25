@@ -1,0 +1,13 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <MySQLCodeStyleSettings version="6">
+      <option name="USE_GENERAL_STYLE" value="false" />
+    </MySQLCodeStyleSettings>
+    <codeStyleSettings language="PHP">
+      <option name="SPACE_WITHIN_IF_PARENTHESES" value="true" />
+      <option name="SPACE_BEFORE_METHOD_PARENTHESES" value="true" />
+      <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
+    </codeStyleSettings>
+  </code_scheme>
+</component>
