@@ -20,11 +20,6 @@ if ( !$con or mysqli_connect_errno() ) {
     header("Location: http://localhost/dbw/project/index.php?connected=false");
 } else {
     echo "Connected!";
-    function test ()
-    {
-        echo "HERE";
-    }
-
     function execute ($query)
     {
         global $con;
@@ -32,8 +27,8 @@ if ( !$con or mysqli_connect_errno() ) {
     }
 
     //TODO Remove from Final
-    $dropDB = "Drop database if exists project";
-    execute($dropDB);
+//    $dropDB = "Drop database if exists project";
+//    execute($dropDB);
 
     $createDb = "create database if not exists project";
     execute($createDb);
@@ -41,7 +36,7 @@ if ( !$con or mysqli_connect_errno() ) {
     $useDb = "use project";
     execute($useDb);
 
-    $createRoom = "create table room (
+    $createRoom = "create table if not exists room (
     roomId int,
     roomType varchar(20),
     constraint roomPK primary key (roomId)
@@ -99,6 +94,8 @@ if ( !$con or mysqli_connect_errno() ) {
     $createTreatment = "create table if not exists treatment (
     treatmentId int,
     name varchar(30),
+    description varchar(50),
+    price decimal(8, 2),
     constraint treatmentPK primary key (treatmentId)
 )";
     execute($createTreatment);
@@ -138,10 +135,8 @@ if ( !$con or mysqli_connect_errno() ) {
     firstName varchar(30),
     lastName varchar(30),
     salary decimal(8, 2),
-    qualification varchar(50),
     sex char,
     age int,
-    experience int,
     constraint primary key (employeeId)
 )";
     execute($createEmployee);
@@ -157,6 +152,8 @@ if ( !$con or mysqli_connect_errno() ) {
     $createDoc = "create table if not exists doctor (
     docId int,
     constraint primary key (docId),
+    qualification varchar(50),
+    experience int,
     constraint doctorToEmployeeFK foreign key (docId) references employee (employeeId)
 )";
     execute($createDoc);
@@ -233,6 +230,159 @@ if ( !$con or mysqli_connect_errno() ) {
     constraint cleansToJanitorFK foreign key (janitorId) references janitor(janitorId)
 )";
     execute($createClean);
+
+
+    execute("drop procedure if exists addDoc");
+    $createProcAddDoc = "create procedure if not exists addDoc(empid int, fname varchar(30), lname varchar(30),
+    sal decimal(8, 2), qual varchar(50), sex char, age int, exp int, type char)
+    begin
+    insert into employee(employeeId, firstName, lastName, salary, sex, age) 
+    values (empid, fname, lname, sal, sex, age);
+    insert into doctor(docId, qualification, experience) values (empid, qual, exp);
+        
+    if type='v' then
+    insert into visiting values (empid);
+    elseif type='t' then
+    insert into trainee values (empid);
+    elseif type='p' then 
+    insert into permanent values (empid);
+    end if;
+    end ;
+    ";
+
+    execute($createProcAddDoc);
+
+
+    execute("drop function if exists checkEmpExists");
+    $createProcCheckEmp = "create function if not exists checkEmpExists(empid int)
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select count(*) into ans from employee where employeeId=empid;
+    return (ans);
+    end;";
+    execute($createProcCheckEmp);
+
+    execute("drop procedure if exists deleteDoc");
+    $createProcDelDoc = "create procedure if not exists deleteDoc(empid int)
+    begin
+    delete from visiting where visId=empid;
+    delete from trainee where trainId=empid;
+    delete from permanent where permId=empid;
+    delete from doctor where docId=empid;
+    delete from employee where employeeId=empid;
+    end;
+    ";
+    execute($createProcDelDoc);
+
+
+
+    execute("drop procedure if exists addHs");
+    $createProcAddHs = "create procedure if not exists addHs(empid int, fname varchar(30), lname varchar(30),
+    sal decimal(8, 2), sex char, age int, type char)
+    begin
+    insert into employee(employeeId, firstName, lastName, salary, sex, age) 
+    values (empid, fname, lname, sal, sex, age);
+    
+    insert into helpingStaff values (empid);
+        
+    if type='j' then
+    insert into janitor values (empid);
+    elseif type='n' then
+    insert into nurse values (empid);
+    end if;
+    end ;
+    ";
+
+    execute($createProcAddHs);
+
+    execute("drop procedure if exists deleteHs");
+    $createProcDelHs = "create procedure if not exists deleteHs(empid int)
+    begin
+    delete from janitor where janitorId=empid;
+    delete from nurse where nurseId=empid;
+    delete from helpingStaff where staffId=empid;
+    delete from employee where employeeId=empid;
+    end;
+    ";
+    execute($createProcDelHs);
+
+
+    execute("drop procedure if exists addRoomGov");
+    execute("drop procedure if exists addRoomJan");
+    $createProcAddRoomJan = "create procedure if not exists addRoomGov(roomid int, govid int)
+    begin
+    insert into governs(roomId, nurseId) values (roomid, govid);
+    end;
+    ";
+    execute($createProcAddRoomJan);
+
+    $createProcAddRoomJan = "create procedure if not exists addRoomJan(roomid int, janid int)
+    begin
+    insert into cleans(roomId, janitorId) values (roomid, janid);
+    end;
+    ";
+    execute($createProcAddRoomJan);
+
+    execute("drop procedure if exists getLastPatId");
+    $createFuncGetLastPatId = "create function if not exists getLastPatId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(patientId) into ans from patient;
+    return ans;
+    end;";
+    execute($createFuncGetLastPatId);
+
+    execute("drop procedure if exists addPat");
+    $createProcAddPat = "create procedure if not exists addPat(fname varchar(20), lname varchar(20), 
+    sex char, age int, al1 varchar(50), al2 varchar(50), city varchar(40), s varchar(40), 
+    zip varchar(6), cou varchar(20), doa date)
+    begin
+    declare id int;
+    select getLastPatId() into id;
+    if isnull(id) then
+    set id = 1;
+    else
+    set id = id + 1;
+    end if;
+    
+    insert into patient(patientId, firstName, lastName, sex, age, addressLine1, 
+    addressLine2, city, state, zipCode, country, dateAdmitted) values (
+    id, fname, lname, sex, age, al1, al2, city, s, zip, cou, doa);
+    
+    end;
+    ";
+    execute($createProcAddPat);
+
+    execute("drop procedure if exists assignPatDoc");
+    $createProcAssignPatDoc = "create procedure if not exists assignPatDoc(pat int, doc int)
+    begin
+    insert into attends(patientId, docId) values (pat, doc);
+    end;
+    ";
+    execute($createProcAssignPatDoc);
+
+    execute("drop procedure if exists assignPatRoom");
+    $createProcAssignPatRoom = "create procedure if not exists assignPatRoom(pat int, room int)
+    begin
+    update patient set roomId=room where patientId=pat;
+    end;
+    ";
+    execute($createProcAssignPatRoom);
+
+    execute("drop procedure if exists assignPatTreatment");
+    $createProcAssignPatTreatment = "create procedure if not exists assignPatTreatment(pat int, treat int)
+    begin
+    insert into billed(patientId, treatmentId) values (pat, treat);
+    end;
+    ";
+    execute($createProcAssignPatTreatment);
+
+
+
 
     mysqli_close($con);
 
