@@ -3,7 +3,7 @@
     <title>
         Create Treatment
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
@@ -26,22 +26,24 @@ if ( !$con or mysqli_connect_errno() ) {
 ?>
 
 <header>
-    HospMan
+    <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+
+<main>
 <form action="#" method="get" onsubmit="validate(event);">
     <div class="treatmentIdG inGroup">
         <label for="treatmentId">Treatment Id</label>
-        <input type="number" min="0" id="treatmentId" name="treatmentId" value="1">
+        <input type="number" min="0" id="treatmentId" name="treatmentId">
     </div>
 
     <div class="name inGroup">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" value="hars">
+        <input type="text" id="name" name="name">
     </div>
 
     <div class="descG inGroup">
         <label for="desc">Description</label>
-        <input type="text" name="desc" id="desc" value="asdf">
+        <input type="text" name="desc" id="desc">
     </div>
 
     <div class="medG inGroup">
@@ -73,8 +75,8 @@ if ( !$con or mysqli_connect_errno() ) {
     <input type="submit" value="Add" name="add">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     let error = document.querySelector(".error");
@@ -93,11 +95,11 @@ if ( !$con or mysqli_connect_errno() ) {
 
         if (!(treatmentid && name && desc))
         {
-            error.innerHTML = "Please Fill all the values!";
             e.preventDefault();
+            setError("Please Fill all the values!");
         }else if (!re.test(name)) {
-            error.innerHTML = `Please enter correct name`;
             e.preventDefault();
+            setError(`Please enter correct name`);
         }
 
         let medlis = document.getElementsByName("med[]");
@@ -113,8 +115,8 @@ if ( !$con or mysqli_connect_errno() ) {
 
         if (!flag)
         {
-            setError("Select At least one Medicine");
             e.preventDefault();
+            setError("Select At least one Medicine");
         }
 
 
@@ -131,13 +133,14 @@ if ( !$con or mysqli_connect_errno() ) {
 
         if (!flag)
         {
-            setError("Select At least one Equipment");
             e.preventDefault();
+            setError("Select At least one Equipment");
         }
     }
 
     function setError(er) {
         let error = document.querySelector(".error");
+        document.querySelector(".error").style.visibility = "visible";
         error.innerHTML = er;
     }
 </script>

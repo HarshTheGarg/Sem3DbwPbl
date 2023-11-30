@@ -3,34 +3,35 @@
     <title>
         Add Helping Staff
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
 
 <header>
-    HospMan
+    <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+<main>
 <form action="#" method="get" onsubmit="validate(event);">
     <div class="empIdG inGroup">
         <label for="empId">Employee Id</label>
-        <input type="number" min="0" id="empId" name="empId" value="555">
+        <input type="number" min="0" id="empId" name="empId" >
     </div>
 
     <div class="name inGroup">
         <div class="fnameG">
             <label for="fname">First Name</label>
-            <input type="text" id="fname" name="fname" value="hars">
+            <input type="text" id="fname" name="fname" >
         </div>
         <div class="lnameG">
             <label for="lname">Last Name</label>
-            <input type="text" id="lname" name="lname" value="gar">
+            <input type="text" id="lname" name="lname" >
         </div>
     </div>
 
     <div class="salG inGroup">
         <label for="salary">Salary</label>
-        <input type="text" name="salary" id="salary" value="234.3">
+        <input type="text" name="salary" id="salary">
     </div>
 
     <div class="sexG inGroup">
@@ -43,7 +44,7 @@
 
     <div class="ageG inGroup">
         <label for="age">Age</label>
-        <input type="number" name="age" id="age" min="20" value="20">
+        <input type="number" name="age" id="age" min="20">
     </div>
 
     <div class="type inGroup">
@@ -57,8 +58,8 @@
     <input type="submit" value="Add" name="add">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     function validate(e)
@@ -75,26 +76,23 @@
         error.innerHTML = "";
 
         const re = /^[a-z]+$/i;
-
-        // console.log({empid, fname, lname, sal, qual, sex, age, experience, type});
-        // console.log({sal});
-
         if (!(empid && fname && lname && sal && sex && age && type))
         {
-            error.innerHTML = "Please Fill all the values!";
             e.preventDefault();
+            setError("Please Fill all the values!");
         }else if (!re.test(fname) || !re.test(lname)) {
-            error.innerHTML = "Please enter correct name";
             e.preventDefault();
+            setError("Please enter correct name");
         }
         else if (isNaN(sal)){
-            error.innerHTML = "Please enter correct salary";
-            // console.log("Please enter numeric salary");
             e.preventDefault();
+            setError("Please enter correct salary");
+            // console.log("Please enter numeric salary");
         }
     }
 
     function setError(er) {
+        document.querySelector(".error").style.visibility = "visible";
         let error = document.querySelector(".error");
         error.innerHTML = er;
     }

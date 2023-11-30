@@ -6,7 +6,7 @@ if ( !$_GET['connected'] or $_GET['connected'] == 'false') {
 <html lang="en">
 <head>
     <title>Project</title>
-    <link href="style/index.css" rel="stylesheet">
+    <link href="./index.css" rel="stylesheet">
 </head>
 <body>
 <header>
@@ -19,14 +19,12 @@ if ( !$_GET['connected'] or $_GET['connected'] == 'false') {
                 <ul class="options">
                     <li><a href="./doctor/create.php">Add Doctor</a></li>
                     <li><a href="./doctor/remove.php">Remove Doctor</a></li>
-<!--                    <li><a href="#">Update Doctor</a></li>-->
                 </ul>
             </li>
             <li>Helping Staff
                 <ul class="options">
                     <li><a href="./hs/create.php">Add Helping Staff</a></li>
                     <li><a href="./hs/remove.php">Remove Helping Staff</a></li>
-<!--                    <li><a href="#">Update Helping Staff</a></li>-->
                 </ul>
             </li>
             <li>Room
@@ -48,19 +46,30 @@ if ( !$_GET['connected'] or $_GET['connected'] == 'false') {
                     <li><a href="./patient/create.php">Add Patient</a></li>
                     <li><a href="./patient/assign.php">Assign</a></li>
                     <li><a href="./patient/discharge.php">Discharge</a></li>
+                    <li><a href="./patient/show.php">Show</a></li>
                 </ul>
             </li>
         </ul>
     </aside>
     <main>
         <h3>Welcome!</h3>
-        Please select an option from the side menu to continue :)
+        <span>Please select an option from the side menu to continue :)</span>
         <br>
-        <?php
-        if (isset($_GET['msg'])) {
-            echo $_GET['msg'];
-        }
-        ?>
+        <script>
+            function makeVisible() {
+                document.querySelector(".msg").style.visibility = "visible";
+            }
+        </script>
+
+        <div class="msg">
+            <?php
+                if (isset($_GET['msg'])) {
+                    echo "<script>makeVisible()</script>";
+                    echo $_GET['msg'];
+                }
+            ?>
+        </div>
+
     </main>
 </div>
 </body>

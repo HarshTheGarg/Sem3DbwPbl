@@ -3,7 +3,7 @@
     <title>
         Add Patient
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
@@ -11,6 +11,7 @@
 <header>
     <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+<main>
 <form action="#" method="get" onsubmit="validate(event);">
 
     <label for="selection">Select patient to discharge</label>
@@ -43,12 +44,13 @@
     <input type="submit" value="Discharge" name="discharge">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     function setError(er) {
         let error = document.querySelector(".error");
+        document.querySelector(".error").style.visibility = "visible";
         error.innerHTML = er;
     }
 </script>

@@ -3,7 +3,7 @@
     <title>
         Add Patient
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
@@ -11,21 +11,22 @@
 <header>
     <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+<main>
 <form action="#" method="get" onsubmit="validate(event);">
     <div class="name inGroup">
         <div class="fnameG">
             <label for="fname">First Name</label>
-            <input type="text" id="fname" name="fname" value="hars">
+            <input type="text" id="fname" name="fname">
         </div>
         <div class="lnameG">
             <label for="lname">Last Name</label>
-            <input type="text" id="lname" name="lname" value="gar">
+            <input type="text" id="lname" name="lname">
         </div>
     </div>
 
     <div class="phone1G inGroup">
         <label for="phone1">Phone number: +91</label>
-        <input type="number" name="phone1" id="phone1" value="7894561230">
+        <input type="number" name="phone1" id="phone1">
     </div>
 
     <div class="phone2G inGroup">
@@ -43,7 +44,7 @@
 
     <div class="ageG inGroup">
         <label for="age">Age</label>
-        <input type="number" name="age" id="age" min="20" value="20">
+        <input type="number" name="age" id="age" min="20">
     </div>
     
     <div class="addressG inGroup">
@@ -81,8 +82,8 @@
     <input type="submit" value="Add" name="add">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     function validate(e)
@@ -111,25 +112,26 @@
 
         if (!(fname && lname && sex && age && addL1 && city && state && country && zip && doa && ph1))
         {
-            error.innerHTML = "Please Fill all the values!";
             e.preventDefault();
+            setError("Please Fill all the values!");
         }else if (!(re.test(fname) && re.test(lname) && re.test(city) && re.test(state) && re.test(country))) {
-            error.innerHTML = "Please enter correct values";
             e.preventDefault();
+            setError("Please enter correct values");
         } else if (zip.length !== 6 ){
-            error.innerHTML = "Please enter correct zip code";
             e.preventDefault();
+            setError("Please enter correct zip code");
         } else if (ph1.length !== 10) {
-            error.innerHTML = "Please enter correct phone number";
             e.preventDefault();
+            setError("Please enter correct phone number");
         } else if (ph2 && ph2.length!== 10) {
-            error.innerHTML = "Please enter correct alternate phone number";
             e.preventDefault();
+            setError("Please enter correct alternate phone number");
         }
     }
 
     function setError(er) {
         let error = document.querySelector(".error");
+        document.querySelector(".error").style.visibility = "visible";
         error.innerHTML = er;
     }
 </script>

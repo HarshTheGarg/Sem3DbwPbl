@@ -1,0 +1,154 @@
+@font-face {
+    font-family: Roboto;
+    src: url("./Roboto/Roboto-Regular.ttf");
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+}
+
+header {
+    padding: 0 0 0 20px;
+
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 4.5em;
+    background-color: #ddffc3;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+header>a {
+    text-decoration: none;
+    color: #1f231b;
+}
+
+#cont {
+    display: flex;
+    flex-direction: row;
+    background-color: #f5fff0;
+}
+
+aside {
+    flex-grow: 2;
+    background-color: #fff;
+    height: 100vh;
+}
+
+aside ul {
+    padding: 20px;
+    list-style: none;
+}
+
+.headers {
+    font-weight: bold;
+    /*line-height: 0.8rem;*/
+}
+
+.options {
+    padding-top: 5px;
+    font-weight: normal;
+    line-height: normal;
+}
+
+.options > li {
+    margin-bottom: 7px;
+}
+
+.options > li > a {
+    color: #000000;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px 0 0 20px;
+    flex-grow: 2;
+    display: flex;
+    justify-content: start;
+    align-content: center;
+    width: 100vw;
+    flex-direction: column;
+}
+
+form {
+    background: rgba(222, 241, 207, 0.68);
+    padding: 40px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inGroup, .fnameG, .lnameG {
+    margin-bottom: 5px;
+    display: flex;
+    align-content: center;
+    justify-content: start;
+    margin-right: 10px;
+}
+
+label {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+input, select {
+    border: none;
+    padding: 5px;
+    background-color: rgba(249, 255, 249, 0.9);
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    background-color: #f5fff0;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+td, th {
+    border: 1px solid #3d4932;
+    border-radius: 5px;
+    padding: 10px 3px;
+}
+
+th {
+    background-color: #f5fff0;
+}
+
+td>ul {
+    list-style: none;
+}
+
+.msg {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #ccffb0;
+    border-radius: 20px;
+    padding: 20px;
+    visibility: hidden;
+}
+
+.error {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #ff5959;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 30px 60px;
+    visibility: hidden;
+}

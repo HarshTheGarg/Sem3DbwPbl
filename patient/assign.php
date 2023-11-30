@@ -3,7 +3,7 @@
     <title>
         Add Patient
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
@@ -27,6 +27,7 @@
 <header>
     <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+<main>
 <form action="#" method="get" onsubmit="validate(event);">
     <div class="patG inGroup">
         <label for="selection">Select patient to assign</label>
@@ -80,8 +81,8 @@
     <input type="submit" value="Assign" name="assign">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     function validate(e) {
@@ -95,8 +96,8 @@
         }
 
         if (!flag) {
-            setError("Select At least one doctor");
             e.preventDefault();
+            setError("Select At least one doctor");
         }
 
 
@@ -110,21 +111,22 @@
         }
 
         if (!flag) {
-            setError("Select At least one Treatment");
             e.preventDefault();
+            setError("Select At least one Treatment");
         }
 
         let $room = document.querySelector('input[name="room"]:checked');
         // console.log($room);
 
         if (!$room){
-            setError("Please select a room!");
             e.preventDefault();
+            setError("Please select a room!");
         }
     }
 
     function setError(er) {
         let error = document.querySelector(".error");
+        document.querySelector(".error").style.visibility = "visible";
         error.innerHTML = er;
     }
 </script>

@@ -4,12 +4,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Remove doctor</title><link href="../style/index.css" rel="stylesheet">
+    <title>Remove doctor</title><link href="../index.css" rel="stylesheet">
 </head>
 <body>
 <header>
-    HospMan
+    <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+<main>
 <form action="remove.php" method="get" onsubmit="del(event)">
     <label for="selection">Select Emp Id to remove</label>
     <select name="empid" id="selection">
@@ -39,7 +40,7 @@
     </select>
     <input type="submit" value="delete" name="delete">
 </form>
-
+</main>
 <?php
 if (isset($_GET['delete'])){
     $ques = "call deleteHs($_GET[empid])";

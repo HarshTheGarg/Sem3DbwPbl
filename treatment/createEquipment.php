@@ -3,7 +3,7 @@
     <title>
         Create Equipment
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
@@ -26,34 +26,35 @@ if ( !$con or mysqli_connect_errno() ) {
 ?>
 
 <header>
-    HospMan
+    <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+<main>
 <form action="#" method="get" onsubmit="validate(event);">
     <div class="equipIdG inGroup">
         <label for="equipId">Equipment Id</label>
-        <input type="number" min="0" id="equipId" name="equipId" value="1">
+        <input type="number" min="0" id="equipId" name="equipId">
     </div>
 
     <div class="name inGroup">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" value="hars">
+        <input type="text" id="name" name="name">
     </div>
 
     <div class="priceG inGroup">
         <label for="price">Cost</label>
-        <input type="text" name="price" id="price" value="234.3">
+        <input type="text" name="price" id="price">
     </div>
 
     <div class="descG inGroup">
         <label for="desc">Description</label>
-        <input type="text" name="desc" id="desc" value="asdf">
+        <input type="text" name="desc" id="desc">
     </div>
 
     <input type="submit" value="Add" name="add">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     let error = document.querySelector(".error");
@@ -73,21 +74,22 @@ if ( !$con or mysqli_connect_errno() ) {
 
         if (!(equipid && name && price && desc))
         {
-            error.innerHTML = "Please Fill all the values!";
             e.preventDefault();
+            setError("Please Fill all the values!");
         }else if (!re.test(name)) {
-            error.innerHTML = "Please enter correct name";
             e.preventDefault();
+            setError("Please enter correct name");
         }
         else if (isNaN(price)){
-            error.innerHTML = "Please enter correct Price";
             // console.log("Please enter numeric salary");
             e.preventDefault();
+            setError("Please enter correct Price");
         }
     }
 
     function setError(er) {
         let error = document.querySelector(".error");
+        document.querySelector(".error").style.visibility = "visible";
         error.innerHTML = er;
     }
 </script>

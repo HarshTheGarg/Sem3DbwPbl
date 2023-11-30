@@ -11,14 +11,23 @@
 
 header {
     padding: 0 0 0 20px;
+
+
+    margin: 50px;
+
+
     display: flex;
     width: 100%;
     align-items: center;
     height: 4.5em;
     background-color: #ddffc3;
-    color: #1f231b;
     font-weight: bold;
     font-size: 1.25rem;
+}
+
+header>a {
+    /*text-decoration: none;*/
+    color: #1f231b;
 }
 
 #cont {

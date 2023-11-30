@@ -3,7 +3,7 @@
     <title>
         Add Doctor
     </title>
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../index.css">
 
 </head>
 <body>
@@ -26,12 +26,14 @@ if ( !$con or mysqli_connect_errno() ) {
 ?>
 
 <header>
-    HospMan
+    <a href="http://localhost/dbw/project">HospMan</a>
 </header>
+
+<main>
 <form action="#" method="get" onsubmit="validate(event)">
     <div class="roomIdG inGroup">
         <label for="roomId">Room Id</label>
-        <input type="number" min="0" id="roomId" name="roomId" value="444">
+        <input type="number" min="0" id="roomId" name="roomId">
     </div>
 
     <div class="roomTypeG inGroup">
@@ -50,11 +52,11 @@ if ( !$con or mysqli_connect_errno() ) {
         <label for="clean">Cleaned by</label>
 
         <?php
-            $ids = mysqli_query($con, "select * from janitor");
+            $ids = mysqli_query($con, "select * from janitor, employee where janitorId=employeeId");
 
             while ($row = mysqli_fetch_array($ids))
             {
-                echo "<label for='$row[janitorId]'>$row[janitorId]</label>";
+                echo "<label for='$row[janitorId]'>$row[janitorId] - $row[firstName] $row[lastName]</label>";
                 echo "<input type='checkbox' name='clean[]' id='$row[janitorId]' value='$row[janitorId]'>";
             }
         ?>
@@ -63,11 +65,11 @@ if ( !$con or mysqli_connect_errno() ) {
     <div class="governG inGroup">
         <label for="govern">Governed By</label>
         <?php
-            $ids = mysqli_query($con, "select * from nurse");
+            $ids = mysqli_query($con, "select * from nurse, employee where nurseId=employeeId");
 
             while ($row = mysqli_fetch_array($ids))
             {
-                echo "<label for='$row[nurseId]'>$row[nurseId]</label>";
+                echo "<label for='$row[nurseId]'>$row[nurseId] - $row[firstName] $row[lastName]</label>";
                 echo "<input type='checkbox' name='govern[]' id='$row[nurseId]' value='$row[nurseId]'>";
             }
         ?>
@@ -76,8 +78,8 @@ if ( !$con or mysqli_connect_errno() ) {
     <input type="submit" value="Add" name="add">
 
 </form>
-
 <div class="error"></div>
+</main>
 
 <script>
     function validate(e) {
@@ -94,8 +96,8 @@ if ( !$con or mysqli_connect_errno() ) {
 
         if (!flag)
         {
-            setError("Select At least one nurse");
             e.preventDefault();
+            setError("Select At least one nurse");
         }
 
 
@@ -112,14 +114,15 @@ if ( !$con or mysqli_connect_errno() ) {
 
         if (!flag)
         {
-            setError("Select At least one Janitor");
             e.preventDefault();
+            setError("Select At least one Janitor");
         }
     }
 
 
     function setError(er) {
         let error = document.querySelector(".error");
+        document.querySelector(".error").style.visibility = "visible";
         error.innerHTML = er;
     }
 </script>
