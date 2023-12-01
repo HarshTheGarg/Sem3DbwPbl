@@ -31,10 +31,10 @@ if ( !$con or mysqli_connect_errno() ) {
 
 <main>
 <form action="#" method="get" onsubmit="validate(event)">
-    <div class="roomIdG inGroup">
-        <label for="roomId">Room Id</label>
-        <input type="number" min="0" id="roomId" name="roomId">
-    </div>
+<!--    <div class="roomIdG inGroup">-->
+<!--        <label for="roomId">Room Id</label>-->
+<!--        <input type="number" min="0" id="roomId" name="roomId">-->
+<!--    </div>-->
 
     <div class="roomTypeG inGroup">
         <label for="roomType">Room Type</label>
@@ -131,35 +131,26 @@ if ( !$con or mysqli_connect_errno() ) {
     if (isset($_GET['add']))
     {
 
-//            $exists = mysqli_query($con, "select checkEmpExists($_GET[empId]) as res");
-//            while ($row = mysqli_fetch_array($exists))
-//            {
-//                echo "$row{res}";
-//            }
-//            echo $exists;
         $exists = 0;
         if ($exists == 0)
         {
-            $quer = "insert into room(roomId, roomType) values($_GET[roomId], '$_GET[type]')";
+            $quer = "insert into room(roomId, roomType) values(getNextRoomId(), '$_GET[type]')";
             mysqli_query($con, $quer);
 
             $govList = $_GET['govern'];
             foreach ($govList as $gov)
             {
-                $quer = "call addRoomGov($_GET[roomId], $gov)";
+                $quer = "call addRoomGov(getLastRoomId(), $gov)";
                 mysqli_query($con, $quer);
-//                echo $gov;
             }
 
             $cleanList = $_GET['clean'];
             foreach ($cleanList as $jan)
             {
-                mysqli_query($con, "call addRoomJan($_GET[roomId], $jan)");
+                mysqli_query($con, "call addRoomJan(getLastRoomId(), $jan)");
             }
 
             header("Location: http://localhost/dbw/project/index.php?connected=true&msg=Successfully added a room!");
-//            if (mysqli_query($con, $quer)){
-//            }
         }
         else {
             echo "<script>setError('ID already exists!')</script>";

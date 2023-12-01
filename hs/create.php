@@ -13,10 +13,10 @@
 </header>
 <main>
 <form action="#" method="get" onsubmit="validate(event);">
-    <div class="empIdG inGroup">
-        <label for="empId">Employee Id</label>
-        <input type="number" min="0" id="empId" name="empId" >
-    </div>
+<!--    <div class="empIdG inGroup">-->
+<!--        <label for="empId">Employee Id</label>-->
+<!--        <input type="number" min="0" id="empId" name="empId" >-->
+<!--    </div>-->
 
     <div class="name inGroup">
         <div class="fnameG">
@@ -64,7 +64,7 @@
 <script>
     function validate(e)
     {
-        let empid = document.querySelector("#empId").value;
+        // let empid = document.querySelector("#empId").value;
         let fname = document.querySelector("#fname").value;
         let lname = document.querySelector("#lname").value;
         let sal = document.querySelector("#salary").value;
@@ -76,7 +76,7 @@
         error.innerHTML = "";
 
         const re = /^[a-z]+$/i;
-        if (!(empid && fname && lname && sal && sex && age && type))
+        if (!(fname && lname && sal && sex && age && type))
         {
             e.preventDefault();
             setError("Please Fill all the values!");
@@ -124,9 +124,8 @@
             $exists = 0;
             if ($exists == 0)
             {
-                $quer = "call addHs($_GET[empId], '$_GET[fname]', 
-                '$_GET[lname]', $_GET[salary], '$_GET[sex]',
-                 $_GET[age], '$_GET[type]')";
+                $quer = "call addHs('$_GET[fname]', 
+                '$_GET[lname]', $_GET[salary], '$_GET[sex]', $_GET[age], '$_GET[type]')";
                 if (mysqli_query($con, $quer)){
                     header("Location: http://localhost/dbw/project/index.php?connected=true&msg=Successfully added a Helping staff!");
                 }

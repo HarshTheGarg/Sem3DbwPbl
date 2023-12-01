@@ -44,7 +44,7 @@
 
     <div class="ageG inGroup">
         <label for="age">Age</label>
-        <input type="number" name="age" id="age" min="20">
+        <input type="number" name="age" id="age">
     </div>
     
     <div class="addressG inGroup">
@@ -93,7 +93,6 @@
         let sex = document.querySelector("#sex").value;
         let age = document.querySelector("#age").value;
         let addL1 = document.querySelector("#addL1").value;
-        let addL2 = document.querySelector("#addL2").value;
         let city = document.querySelector("#city").value;
         let state = document.querySelector("#state").value;
         let country = document.querySelector("#country").value;
@@ -106,9 +105,6 @@
         error.innerHTML = "";
 
         const re = /^[a-z\s]+$/i;
-
-        // console.log({empid, fname, lname, sal, qual, sex, age, experience, type});
-        // console.log({sal});
 
         if (!(fname && lname && sex && age && addL1 && city && state && country && zip && doa && ph1))
         {
@@ -153,19 +149,12 @@
             echo "Some error! < /br> </br>";
             header("Location: http://localhost/dbw/project/index.php?connected=false");
         } else {
-//            $exists = mysqli_query($con, "select checkEmpExists($_GET[empId]) as res");
-//            while ($row = mysqli_fetch_array($exists))
-//            {
-//                echo "$row{res}";
-//            }
-//            echo $exists;
             $exists = 0;
             if ($exists == 0)
             {
                 $quer = "call addPat('$_GET[fname]', '$_GET[lname]', '$_GET[sex]', 
                 $_GET[age], '$_GET[addL1]', '$_GET[addL2]', '$_GET[city]', '$_GET[state]', 
                 '$_GET[zip]', '$_GET[cou]', '$_GET[doa]')";
-//                echo $quer;
                 mysqli_query($con, $quer);
 
                 $quer = "select getLastPatId() as id";
@@ -185,14 +174,8 @@
                     mysqli_query($con, $quer);
                 }
 
-                if (true){
-                    header("Location: http://localhost/dbw/project/index.php?connected=true&msg=Successfully added the patient!");
-                }
+//                header("Location: http://localhost/dbw/project/index.php?connected=true&msg=Successfully added the patient!");
 
-
-            }
-            else {
-                echo "<script>setError('ID already exists!')</script>";
             }
 
         }

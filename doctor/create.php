@@ -13,10 +13,10 @@
 </header>
 <main>
 <form action="#" method="get" onsubmit="validate(event);">
-    <div class="empIdG inGroup">
-        <label for="empId">Employee Id</label>
-        <input type="number" min="0" id="empId" name="empId">
-    </div>
+<!--    <div class="empIdG inGroup">-->
+<!--        <label for="empId">Employee Id</label>-->
+<!--        <input type="number" min="0" id="empId" name="empId">-->
+<!--    </div>-->
 
     <div class="name inGroup">
         <div class="fnameG">
@@ -76,7 +76,7 @@
 <script>
     function validate(e)
     {
-        let empid = document.querySelector("#empId").value;
+        // let empid = document.querySelector("#empId").value;
         let fname = document.querySelector("#fname").value;
         let lname = document.querySelector("#lname").value;
         let sal = document.querySelector("#salary").value;
@@ -94,7 +94,7 @@
         // console.log({empid, fname, lname, sal, qual, sex, age, experience, type});
         // console.log({sal});
 
-        if (!(empid && fname && lname && sal && qual && sex && age && experience && type))
+        if (!(fname && lname && sal && qual && sex && age && experience && type))
         {
             e.preventDefault();
             setError("Please Fill all the values!");
@@ -133,16 +133,10 @@
             echo "Some error! < /br> </br>";
             header("Location: http://localhost/dbw/project/index.php?connected=false");
         } else {
-//            $exists = mysqli_query($con, "select checkEmpExists($_GET[empId]) as res");
-//            while ($row = mysqli_fetch_array($exists))
-//            {
-//                echo "$row{res}";
-//            }
-//            echo $exists;
             $exists = 0;
             if ($exists == 0)
             {
-                $quer = "call addDoc($_GET[empId], '$_GET[fname]', '$_GET[lname]', $_GET[salary], '$_GET[quali]', '$_GET[sex]', $_GET[age], $_GET[experience], '$_GET[type]')";
+                $quer = "call addDoc('$_GET[fname]', '$_GET[lname]', $_GET[salary], '$_GET[quali]', '$_GET[sex]', $_GET[age], $_GET[experience], '$_GET[type]')";
                 if (mysqli_query($con, $quer)){
                     header("Location: http://localhost/dbw/project/index.php?connected=true&msg=Successfully added a doctor!");
                 }

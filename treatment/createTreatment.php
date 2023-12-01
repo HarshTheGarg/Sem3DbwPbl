@@ -31,10 +31,10 @@ if ( !$con or mysqli_connect_errno() ) {
 
 <main>
 <form action="#" method="get" onsubmit="validate(event);">
-    <div class="treatmentIdG inGroup">
-        <label for="treatmentId">Treatment Id</label>
-        <input type="number" min="0" id="treatmentId" name="treatmentId">
-    </div>
+<!--    <div class="treatmentIdG inGroup">-->
+<!--        <label for="treatmentId">Treatment Id</label>-->
+<!--        <input type="number" min="0" id="treatmentId" name="treatmentId">-->
+<!--    </div>-->
 
     <div class="name inGroup">
         <label for="name">Name</label>
@@ -83,7 +83,7 @@ if ( !$con or mysqli_connect_errno() ) {
     function validate(e)
     {
         error.innerHTML = "";
-        let treatmentid = document.querySelector("#treatmentID").value;
+        // let treatmentid = document.querySelector("#treatmentID").value;
         let name = document.querySelector("#name").value;
         let desc = document.querySelector("#desc").value;
 
@@ -93,7 +93,7 @@ if ( !$con or mysqli_connect_errno() ) {
         // console.log({empid, fname, lname, sal, qual, sex, age, experience, type});
         // console.log({sal});
 
-        if (!(treatmentid && name && desc))
+        if (!(name && desc))
         {
             e.preventDefault();
             setError("Please Fill all the values!");
@@ -178,14 +178,20 @@ if ( !$con or mysqli_connect_errno() ) {
                     }
                 }
 
-                $quer = "insert into treatment(treatmentId, name, description, price) values ($_GET[treatmentId], '$_GET[name]', '$_GET[desc]', $totPrice)";
+                $quer = "select getNextTreatmentId() as tid";
+                $res = mysqli_query($con, $quer);
+                while ($row = mysqli_fetch_array($res)) {
+                    $id = $row['tid'];
+                }
+
+                $quer = "insert into treatment(treatmentId, name, description, price) values ($id, '$_GET[name]', '$_GET[desc]', $totPrice)";
                 echo $quer;
                 mysqli_query($con, $quer);
 
                 $medList = $_GET['med'];
                 foreach ($medList as $med)
                 {
-                    $quer = "insert into medsReq (treatmentId, medId) values ($_GET[treatmentId], $med)";
+                    $quer = "insert into medsReq (treatmentId, medId) values ($id, $med)";
                     echo $quer;
                     mysqli_query($con, $quer);
                 }
@@ -194,7 +200,7 @@ if ( !$con or mysqli_connect_errno() ) {
                 $equipList = $_GET['equip'];
                 foreach ($equipList as $equip)
                 {
-                    $quer = "insert into equipsReq (treatmentId, equipId) values ($_GET[treatmentId], $equip)";
+                    $quer = "insert into equipsReq (treatmentId, equipId) values ($id, $equip)";
                     mysqli_query($con, $quer);
                 }
 

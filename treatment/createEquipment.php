@@ -30,10 +30,10 @@ if ( !$con or mysqli_connect_errno() ) {
 </header>
 <main>
 <form action="#" method="get" onsubmit="validate(event);">
-    <div class="equipIdG inGroup">
-        <label for="equipId">Equipment Id</label>
-        <input type="number" min="0" id="equipId" name="equipId">
-    </div>
+<!--    <div class="equipIdG inGroup">-->
+<!--        <label for="equipId">Equipment Id</label>-->
+<!--        <input type="number" min="0" id="equipId" name="equipId">-->
+<!--    </div>-->
 
     <div class="name inGroup">
         <label for="name">Name</label>
@@ -61,7 +61,7 @@ if ( !$con or mysqli_connect_errno() ) {
     function validate(e)
     {
         error.innerHTML = "";
-        let equipid = document.querySelector("#equipID").value;
+        // let equipid = document.querySelector("#equipID").value;
         let name = document.querySelector("#name").value;
         let price = document.querySelector("#price").value;
         let desc = document.querySelector("#desc").value;
@@ -72,7 +72,7 @@ if ( !$con or mysqli_connect_errno() ) {
         // console.log({empid, fname, lname, sal, qual, sex, age, experience, type});
         // console.log({sal});
 
-        if (!(equipid && name && price && desc))
+        if (!( name && price && desc))
         {
             e.preventDefault();
             setError("Please Fill all the values!");
@@ -100,7 +100,7 @@ if ( !$con or mysqli_connect_errno() ) {
             $exists = 0;
             if ($exists == 0)
             {
-                $quer = "insert into equipment(equipId, name, description, price) values ($_GET[equipId], '$_GET[name]', '$_GET[desc]', $_GET[price])";
+                $quer = "insert into equipment(equipId, name, description, price) values (getNextEquipId(), '$_GET[name]', '$_GET[desc]', $_GET[price])";
                 echo $quer;
                 if (mysqli_query($con, $quer)){
                     header("Location: http://localhost/dbw/project/index.php?connected=true&msg=Successfully added a equipment!");

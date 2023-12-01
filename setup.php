@@ -141,14 +141,6 @@ if ( !$con or mysqli_connect_errno() ) {
 )";
     execute($createEmployee);
 
-    $createEmpPhone = "create table if not exists empPhone (
-    employeeId int,
-    number varchar(10),
-    constraint primary key (employeeId, number),
-    constraint empPhoneToEmployeeFK foreign key (employeeId) references employee(employeeId)
-)";
-    execute($createEmpPhone);
-
     $createDoc = "create table if not exists doctor (
     docId int,
     constraint primary key (docId),
@@ -233,19 +225,23 @@ if ( !$con or mysqli_connect_errno() ) {
 
 
     execute("drop procedure if exists addDoc");
-    $createProcAddDoc = "create procedure if not exists addDoc(empid int, fname varchar(30), lname varchar(30),
+    $createProcAddDoc = "create procedure if not exists addDoc(fname varchar(30), lname varchar(30),
     sal decimal(8, 2), qual varchar(50), sex char, age int, exp int, type char)
     begin
+    
+    declare id int;
+    select getLastDocId() into id;
+    set id = id+1;
     insert into employee(employeeId, firstName, lastName, salary, sex, age) 
-    values (empid, fname, lname, sal, sex, age);
-    insert into doctor(docId, qualification, experience) values (empid, qual, exp);
+    values (id, fname, lname, sal, sex, age);
+    insert into doctor(docId, qualification, experience) values (id, qual, exp);
         
     if type='v' then
-    insert into visiting values (empid);
+    insert into visiting values (id);
     elseif type='t' then
-    insert into trainee values (empid);
+    insert into trainee values (id);
     elseif type='p' then 
-    insert into permanent values (empid);
+    insert into permanent values (id);
     end if;
     end ;
     ";
@@ -279,18 +275,23 @@ if ( !$con or mysqli_connect_errno() ) {
 
 
     execute("drop procedure if exists addHs");
-    $createProcAddHs = "create procedure if not exists addHs(empid int, fname varchar(30), lname varchar(30),
+    $createProcAddHs = "create procedure if not exists addHs(fname varchar(30), lname varchar(30),
     sal decimal(8, 2), sex char, age int, type char)
     begin
-    insert into employee(employeeId, firstName, lastName, salary, sex, age) 
-    values (empid, fname, lname, sal, sex, age);
     
-    insert into helpingStaff values (empid);
+    declare id int;
+    select getLastHsId() into id;
+    set id = id + 1;
+    
+    insert into employee(employeeId, firstName, lastName, salary, sex, age) 
+    values (id, fname, lname, sal, sex, age);
+    
+    insert into helpingStaff values (id);
         
     if type='j' then
-    insert into janitor values (empid);
+    insert into janitor values (id);
     elseif type='n' then
-    insert into nurse values (empid);
+    insert into nurse values (id);
     end if;
     end ;
     ";
@@ -382,6 +383,108 @@ if ( !$con or mysqli_connect_errno() ) {
     execute($createProcAssignPatTreatment);
 
 
+    execute("drop procedure if exists getLastDocId");
+    $createFuncGetLastDocId = "create function if not exists getLastDocId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(docId) into ans from doctor;
+    if isnull(ans) then
+    set ans = 1000;
+    end if;
+    return ans;
+    end;";
+    execute($createFuncGetLastDocId);
+
+
+    execute("drop procedure if exists getLastHsId");
+    $createFuncGetLastHsId = "create function if not exists getLastHsId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(staffId) into ans from helpingStaff;
+    if isnull(ans) then
+    set ans = 5000;
+    end if;
+    return ans;
+    end;";
+    execute($createFuncGetLastHsId);
+
+    execute("drop procedure if exists getLastRoomId");
+    $createFuncGetLastRoomId = "create function if not exists getLastRoomId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(roomId) into ans from room;
+    if isnull(ans) then
+    set ans = 100;
+    end if;
+    return ans;
+    end;";
+    execute($createFuncGetLastRoomId);
+
+    execute("drop procedure if exists getNextRoomId");
+    $createFuncGetNextRoomId = "create function if not exists getNextRoomId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(roomId) into ans from room;
+    if isnull(ans) then
+    set ans = 100;
+    end if;
+    set ans = ans + 1;
+    return ans;
+    end;";
+    execute($createFuncGetNextRoomId);
+
+    execute("drop procedure if exists getNextMedId");
+    $createFuncGetNextMedId = "create function if not exists getNextMedId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(medId) into ans from medicine;
+    if isnull(ans) then
+    set ans = 200;
+    end if;
+    set ans = ans + 1;
+    return ans;
+    end;";
+    execute($createFuncGetNextMedId);
+
+    execute("drop procedure if exists getNextEquipId");
+    $createFuncGetNextEquipId = "create function if not exists getNextEquipId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(equipId) into ans from equipment;
+    if isnull(ans) then
+    set ans = 500;
+    end if;
+    set ans = ans + 1;
+    return ans;
+    end;";
+    execute($createFuncGetNextEquipId);
+
+    execute("drop procedure if exists getNextTreatmentId");
+    $createFuncGetNextTreatmentId = "create function if not exists getNextTreatmentId()
+    returns int
+    deterministic
+    begin
+    declare ans int default 0;
+    select max(treatmentId) into ans from treatment;
+    if isnull(ans) then
+    set ans = 100;
+    end if;
+    set ans = ans + 1;
+    return ans;
+    end;";
+    execute($createFuncGetNextTreatmentId);
 
 
     mysqli_close($con);
